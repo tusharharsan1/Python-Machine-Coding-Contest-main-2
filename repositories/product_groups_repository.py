@@ -12,7 +12,5 @@ class ProductGroupsRepository(Repository[ProductGroup]):
         super().__init__(session, ProductGroup)
 
     def find_by_products_containing(self, product: Product) -> List[ProductGroup]:
-        # TODO: Return all the product groups which contain this product.
-        #   Hint: for a many-to-many relationship, `.contains(...)` checks if a product is in the list, for example
-        #     self.session.query(ProductGroup).filter(ProductGroup.products.contains(product)).all()
-        pass
+        """Returns all the product groups which contain this product."""
+        return self.session.query(ProductGroup).filter(ProductGroup.products.contains(product)).all()

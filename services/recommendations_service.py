@@ -24,20 +24,26 @@ class RecommendationsService:
             ProductNotFoundException: if there is no product with this id.
         """
 
-        # TODO Step 1: Look up the product with self.product_repository.find_by_id(product_id).
-        #   If there is no such product (you get None), raise ProductNotFoundException("...some message...").
+        # Step 1: find the product, it must exist
+        product = self.product_repository.find_by_id(product_id)
+        if product is None:
+            raise ProductNotFoundException(f"Product with id {product_id} not found")
 
-        # TODO Step 2: Find all the ProductGroups that contain this product.
-        #   Use: self.product_groups_repository.find_by_products_containing(product)
+        # Step 2: find all the groups which contain this product
+        product_groups = self.product_groups_repository.find_by_products_containing(product)
 
-        # TODO Step 3: Collect the products of all those groups into ONE list.
-        #   Every group has a list of products: group.products
-        #   Loop over the groups, and loop over group.products inside it, adding every product to a list.
+        # Step 3 and 4: collect the products of all the groups into ONE list,
+        # skipping the product itself and the products we have already added
+        recommendations = []
+        added_ids = set()  # ids of the products already in `recommendations`
+        for group in product_groups:
+            for other_product in group.products:
+                if other_product.id == product_id:
+                    continue  # never recommend the product which the user is already buying
+                if other_product.id in added_ids:
+                    continue  # already recommended through another group
+                added_ids.add(other_product.id)
+                recommendations.append(other_product)
 
-        # TODO Step 4: Remove the duplicates and the product itself.
-        #   The same product can be in many groups, but it must appear only once in the answer.
-        #   Compare products using their id (product.id), and skip the product whose id is product_id.
-
-        # TODO Step 5: Return the list of recommended products (and delete the line `return None` below).
-
-        return None
+        # Step 5: return the recommended products
+        return recommendations

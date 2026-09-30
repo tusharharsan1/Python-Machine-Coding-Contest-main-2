@@ -12,10 +12,9 @@ class RecommendationsController:
             -> GenerateRecommendationsResponseDto:
         response_dto = GenerateRecommendationsResponseDto()
         try:
-            # TODO: 1. Call self.recommendations_service.get_recommendations(request_dto.product_id)
-            #       2. Put the list that comes back in response_dto.recommendations
-            #       3. Set response_dto.response_status = ResponseStatus.SUCCESS
-            pass
+            recommendations = self.recommendations_service.get_recommendations(request_dto.product_id)
+            response_dto.recommendations = recommendations
+            response_dto.response_status = ResponseStatus.SUCCESS
         except Exception:
             # If ANY exception happens (for example ProductNotFoundException), the status is FAILURE
             # and recommendations must stay None.

@@ -29,7 +29,7 @@ Follow these steps to complete the assignment:
 
 ### Step 3: Implement the Service Logic (`services/recommendations_service.py`)
 - The class skeleton is already provided with the repositories.
-- Implement `get_recommendations(product_id)` following the `TODO` steps in the file:
+- Implement `get_recommendations(product_id)` following these steps:
   1. Fetch the product by `product_id`. If not found, raise `ProductNotFoundException`.
   2. Find all product groups containing this product using `find_by_products_containing(product)`.
   3. Collect the products of all these groups into a single list.
